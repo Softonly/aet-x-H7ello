@@ -1,21 +1,43 @@
 "use client";
 
-import React, { useEffect } from "react";
-import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import {
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  NavbarMenuToggle,
+  NavbarMenu,
+  NavbarMenuItem,
+  Link,
+  Button,
+} from "@nextui-org/react";
 import {
   SignInButton,
+  SignedIn,
   SignedOut,
   UserButton,
   ClerkProvider,
   useAuth,
 } from "@clerk/nextjs";
 import { init } from "@instantdb/react";
-import { Separator } from "@base-ui-components/react/separator";
 
-// Initialize InstantDB
+// Initialize InstantDB outside the component to avoid re-initialization on each render
 const db = init({ appId: process.env.NEXT_PUBLIC_INSTANTDB_APP_ID || "" });
 
-const Navbar = () => {
+export const AcmeLogo = () => (
+  <svg fill="none" height="36" viewBox="0 0 32 32" width="36">
+    <path
+      clipRule="evenodd"
+      d="M17.6482 10.1305L15.8785 7.02583L7.02979 22.5499H10.5278L17.6482 10.1305ZM19.8798 14.0457L18.11 17.1983L19.394 19.4511H16.8453L15.1056 22.5499H24.7272L19.8798 14.0457Z"
+      fill="currentColor"
+      fillRule="evenodd"
+    />
+  </svg>
+);
+
+export default function CustomNavbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { getToken } = useAuth();
 
   const signInToInstantWithClerkToken = async () => {
@@ -29,75 +51,98 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    signInToInstantWithClerkToken();
+    const signInWithToken = async () => {
+      try {
+        await signInToInstantWithClerkToken();
+      } catch (error) {
+        console.error("Error during sign-in with Clerk token:", error);
+      }
+    };
+
+    signInWithToken();
   }, []);
 
   const { isLoading, user, error } = db.useAuth();
 
+  const menuItems = user
+    ? [
+        "Profile",
+        "Dashboard",
+        "Activity",
+        "Analytics",
+        "System",
+        "Deployments",
+        "My Settings",
+        "Team Settings",
+        "Help & Feedback",
+        "Log Out",
+      ]
+    : ["Help & Feedback", "Log In"];
+
   return (
-    <ClerkProvider
-      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ""}
-    >
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-900 text-white shadow-lg py-4 px-6 flex items-center justify-between">
-        {/* Logo or brand name */}
-        <div className="text-xl font-bold tracking-wide">
-          <Link href="/">AetherShop.</Link>
-        </div>
+    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ""}>
+      <Navbar onMenuOpenChange={setIsMenuOpen}>
+        <NavbarContent>
+          <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} className="sm:hidden" />
+          <NavbarBrand>
+            <AcmeLogo />
+            <p className="font-bold text-inherit">AetherShop.</p>
+          </NavbarBrand>
+        </NavbarContent>
 
-        {/* Separator for large screens */}
-        <Separator orientation="vertical" className="hidden lg:block h-8 bg-gray-700 mx-6" />
+        <NavbarContent className="hidden sm:flex gap-4" justify="center">
+          <NavbarItem>
+            <Link aria-label="Go to Dashboard" color="foreground" href="/dashboard">
+              Dashboard
+            </Link>
+          </NavbarItem>
+          <NavbarItem>
+            <Link aria-label="Learn About Us" color="foreground" href="/about">
+              About Us
+            </Link>
+          </NavbarItem>
+          <NavbarItem>
+            <Link aria-label="Visit Shop" color="foreground" href="/shopping">
+              Shop
+            </Link>
+          </NavbarItem>
+          <NavbarItem>
+            <Link aria-label="Contact Us" color="foreground" href="/contact">
+              Contact
+            </Link>
+          </NavbarItem>
+        </NavbarContent>
 
-        {/* Navigation links */}
-        <div className="hidden lg:flex space-x-6">
-          <Link
-            href="/"
-            className="hover:bg-gray-700 px-4 py-2 rounded transition-colors"
-          >
-            Dashboard
-          </Link>
-          <Link
-            href="/about"
-            className="hover:bg-gray-700 px-4 py-2 rounded transition-colors"
-          >
-            About Us
-          </Link>
-          <Separator orientation="horizontal" className="block lg:hidden my-2 bg-gray-700" />
-          <Link
-            href="/shopping"
-            className="hover:bg-gray-700 px-4 py-2 rounded transition-colors"
-          >
-            Shop
-          </Link>
-          <Link
-            href="/contact"
-            className="hover:bg-gray-700 px-4 py-2 rounded transition-colors"
-          >
-            Contact
-          </Link>
-        </div>
+        <NavbarContent justify="end">
+          <NavbarItem>
+            {isLoading ? (
+              <div>Loading...</div>
+            ) : error ? (
+              <div>Error signing in! Please try again.</div>
+            ) : user ? (
+              <UserButton />
+            ) : (
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <Button color="primary" variant="flat">
+                    Login
+                  </Button>
+                </SignInButton>
+              </SignedOut>
+            )}
+          </NavbarItem>
+        </NavbarContent>
 
-        {/* Authentication */}
-        <Separator orientation="vertical" className="hidden lg:block h-8 bg-gray-700 mx-6" />
-        <div className="flex items-center space-x-4">
-          {isLoading ? (
-            <div>Loading...</div>
-          ) : error ? (
-            <div>Error signing in! {error.message}</div>
-          ) : user ? (
-            <UserButton />
-          ) : (
-            <SignedOut>
-              <SignInButton mode="modal">
-                <button className="text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded transition-colors">
-                  Login
-                </button>
-              </SignInButton>
-            </SignedOut>
-          )}
-        </div>
-      </nav>
+        <NavbarMenu>
+          {menuItems.map((item, index) => (
+            <NavbarMenuItem key={`${item}-${index}`}>
+              <Link className="w-full" color={index === menuItems.length - 1 ? "danger" : "foreground"} href="#" size="lg">
+                {item}
+              </Link>
+            </NavbarMenuItem>
+          ))}
+        </NavbarMenu>
+      </Navbar>
     </ClerkProvider>
   );
-};
-
-export default Navbar;
+}

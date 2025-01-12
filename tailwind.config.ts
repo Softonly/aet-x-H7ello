@@ -1,13 +1,15 @@
 import type { Config } from "tailwindcss";
 import daisyui from "daisyui";
+import { nextui } from "@nextui-org/react";
 
 const config: Config = {
-  darkMode: ["class"], // Hem ana hem de yan koddaki yapı destekleniyor
+  darkMode: ["class"],
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}", // NextUI content paths
   ],
   theme: {
     container: {
@@ -135,6 +137,7 @@ const config: Config = {
     require("@tailwindcss/typography"),
     require("@tailwindcss/forms"),
     require("tailwindcss-react-aria-components"),
+    nextui(), // NextUI Tailwind plugin
     daisyui,
   ],
 };

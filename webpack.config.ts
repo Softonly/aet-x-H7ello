@@ -1,6 +1,7 @@
 import path from 'path';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import DotenvWebpack from 'dotenv-webpack';
+import webpack from 'webpack';
 
 export default {
   mode: 'production',
@@ -11,22 +12,30 @@ export default {
     clean: true,
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs'],
     alias: {
-      '@': path.resolve(__dirname, 'src'),
+      '@': path.resolve(__dirname, 'src'), '@nextui-org/react': path.resolve(__dirname, 'node_modules/@nextui-org/react'),
     },
     mainFields: ['browser', 'module', 'main'],
+    fallback: {
+      crypto: false,
+      stream: false,
+      assert: false,
+    },
+    // Handle ES module-specific resolution
+    mainFiles: ['index', 'main'],
   },
   module: {
     rules: [
       {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],
-          },
+        use: 'ts-loader',
+      },
+      {
+        test: /\.m?js$/,
+        resolve: {
+          fullySpecified: false, // Ensures .mjs modules are loaded correctly
         },
       },
       {
@@ -47,6 +56,15 @@ export default {
       filename: 'styles.css',
     }),
     new DotenvWebpack(),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /chunk-RFEIBVIG\.mjs/, // Ignore specific problematic module
+    }),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /@nextui-org\/shared-utils/, // Ignore specific modules causing export errors
+    }),
   ],
   optimization: {
     splitChunks: {
