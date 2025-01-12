@@ -4,13 +4,13 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import {
   SignInButton,
-  SignedIn,
   SignedOut,
   UserButton,
   ClerkProvider,
   useAuth,
 } from "@clerk/nextjs";
 import { init } from "@instantdb/react";
+import { Separator } from "@base-ui-components/react/separator";
 
 // Initialize InstantDB
 const db = init({ appId: process.env.NEXT_PUBLIC_INSTANTDB_APP_ID || "" });
@@ -44,6 +44,9 @@ const Navbar = () => {
           <Link href="/">AetherShop.</Link>
         </div>
 
+        {/* Separator for large screens */}
+        <Separator orientation="vertical" className="hidden lg:block h-8 bg-gray-700 mx-6" />
+
         {/* Navigation links */}
         <div className="hidden lg:flex space-x-6">
           <Link
@@ -58,6 +61,7 @@ const Navbar = () => {
           >
             About Us
           </Link>
+          <Separator orientation="horizontal" className="block lg:hidden my-2 bg-gray-700" />
           <Link
             href="/shopping"
             className="hover:bg-gray-700 px-4 py-2 rounded transition-colors"
@@ -73,6 +77,7 @@ const Navbar = () => {
         </div>
 
         {/* Authentication */}
+        <Separator orientation="vertical" className="hidden lg:block h-8 bg-gray-700 mx-6" />
         <div className="flex items-center space-x-4">
           {isLoading ? (
             <div>Loading...</div>
