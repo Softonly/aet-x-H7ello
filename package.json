@@ -74,7 +74,7 @@
     "@clerk/types": "^4.40.0",
     "@cloudinary/react": "^1.13.0",
     "@cloudinary/url-gen": "^1.21.0",
-    "@emotion/react": "^11.13.0",
+    "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.13.0",
     "@fontsource-variable/museomoderno": "^5.0.21",
     "@fontsource/geist-sans": "^5.0.3",
@@ -101,6 +101,8 @@
     "@libsql/client": "^0.14.0",
     "@libsql/hrana-client": "^0.8.0",
     "@libsql/kysely-libsql": "^0.4.1",
+    "@mantine/core": "^7.16.0",
+    "@mantine/hooks": "^7.16.0",
     "@material-design-icons/font": "^0.14.13",
     "@metamask/detect-provider": "^2.0.0",
     "@metamask/sdk": "^0.31.1",
@@ -489,7 +491,7 @@
     }
   },
   "jest": {
-    "preset":  [ 
+    "preset": [
       "ts-jest",
       "@babel/preset-env",
       "@babel/preset-react",
