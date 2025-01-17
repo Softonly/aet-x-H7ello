@@ -63,8 +63,11 @@ server.use((req: Request, res: Response, next: Function) => {
     'https://aet-x-h7ello.vercel.app',
     'https://datafortress.website',
     'https://www.datafortress.website',
-    'https://clerk.datafortress.website',
-    'https://jubilant-lamp-pjjrgxxx7p7jcxrq-3000.app.github.dev',
+    'https://clerk.datafortress.webiste',
+    'https://datafortress.shop',
+    'https://www.datafortress.shop',
+    'https://clerk.datafortress.shop',
+    'https://clerk.datafortress.shop/npm/@clerk/clerk-js@5/dist/clerk.browser.js',
     'https://clerk.datafortress.website/npm/@clerk/clerk-js@5/dist/clerk.browser.js'
   ];
 
