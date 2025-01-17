@@ -101,6 +101,7 @@
     "@libsql/client": "^0.14.0",
     "@libsql/hrana-client": "^0.8.0",
     "@libsql/kysely-libsql": "^0.4.1",
+    "@mantine/core": "^7.16.0",
     "@material-design-icons/font": "^0.14.13",
     "@metamask/detect-provider": "^2.0.0",
     "@metamask/sdk": "^0.31.1",
@@ -489,7 +490,7 @@
     }
   },
   "jest": {
-    "preset":  [ 
+    "preset": [
       "ts-jest",
       "@babel/preset-env",
       "@babel/preset-react",
