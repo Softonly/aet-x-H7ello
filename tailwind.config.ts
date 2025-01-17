@@ -1,6 +1,5 @@
 import type { Config } from "tailwindcss";
 import daisyui from "daisyui";
-import { nextui } from "@nextui-org/react";
 
 const config: Config = {
   darkMode: ["class"],
@@ -137,7 +136,6 @@ const config: Config = {
     require("@tailwindcss/typography"),
     require("@tailwindcss/forms"),
     require("tailwindcss-react-aria-components"),
-    nextui(), // NextUI Tailwind plugin
     daisyui,
   ],
 };
