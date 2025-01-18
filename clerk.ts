@@ -8,7 +8,7 @@ function LoadClerkScript() {
     const loadScript = async () => {
       const token = await getToken();
       const script = document.createElement('script');
-      script.src = 'https://clerk.datafortress.website/npm/@clerk/clerk-js@5/dist/clerk.browser.js';
+      script.src = 'https://clerk.datafortress.shop/npm/@clerk/clerk-js@5/dist/clerk.browser.js';
       script.async = true;
       script.onload = () => {
         // Script yüklendiğinde çalışacak kod
