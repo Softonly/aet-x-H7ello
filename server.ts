@@ -65,6 +65,7 @@ server.use((req: Request, res: Response, next: Function) => {
     'https://www.datafortress.website',
     'https://clerk.datafortress.webiste',
     'https://datafortress.shop',
+    'https://aet-x-h7ello-git-origin-webs-projects-4ddef413.vercel.app',
     'https://www.datafortress.shop',
     'https://clerk.datafortress.shop',
     'https://clerk.datafortress.shop/npm/@clerk/clerk-js@5/dist/clerk.browser.js',
