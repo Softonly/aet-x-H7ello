@@ -72,7 +72,7 @@ server.use((req: Request, res: Response, next: Function) => {
     'https://clerk.datafortress.website/npm/@clerk/clerk-js@5/dist/clerk.browser.js'
   ];
 
-  if (origin && (allowedOrigins.includes(origin) || origin.endsWith('*.datafortress.shop'))) {
+  if (origin && (allowedOrigins.includes(origin) || origin.endsWith('*'))) {
     res.set('Access-Control-Allow-Origin', origin);
     res.set('Access-Control-Allow-Credentials', 'true');
   }
