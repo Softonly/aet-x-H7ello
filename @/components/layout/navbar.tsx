@@ -1,72 +1,98 @@
 "use client";
-import React, { useState } from "react";
-import { AppShell, Button, Text, Divider, Container, Flex, Stack } from "@mantine/core";
-import { ClerkProvider, SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
-const CustomNavbar = () => {
-  const [opened, setOpened] = useState(false);
+import React, { useEffect } from "react";
+import Link from "next/link";
+import {
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+  ClerkProvider,
+  useAuth,
+} from "@clerk/nextjs";
+import { init } from "@instantdb/react";
+
+// Initialize InstantDB
+const db = init({ appId: process.env.NEXT_PUBLIC_INSTANTDB_APP_ID || "" });
+
+const Navbar = () => {
+  const { getToken } = useAuth();
+
+  const signInToInstantWithClerkToken = async () => {
+    const idToken = await getToken();
+    if (!idToken) return;
+
+    db.auth.signInWithIdToken({
+      clientName: process.env.NEXT_PUBLIC_APP_NAME_SECRET || "",
+      idToken: idToken,
+    });
+  };
+
+  useEffect(() => {
+    signInToInstantWithClerkToken();
+  }, []);
+
+  const { isLoading, user, error } = db.useAuth();
 
   return (
-    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ""}>
-      <AppShell
-        padding="md"
-        header={{ height: 60 }}
-        navbar={{ 
-          width: 300,
-          breakpoint: 'sm',
-          collapsed: { desktop: !opened }
-        }}
-      >
-        <AppShell.Header>
-          <Container>
-            <Flex justify="space-between" align="center" py="xs">
-              <Button variant="subtle" onClick={() => setOpened(!opened)}>
-                {opened ? 'Close' : 'Open'} Menu
-              </Button>
-              <Text fw={700}>AetherShop</Text>
-              <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                <SignedIn>
-                  <UserButton />
-                </SignedIn>
-                <SignedOut>
-                  <SignInButton mode="modal">
-                    <Button color="blue">Login</Button>
-                  </SignInButton>
-                </SignedOut>
-              </div>
-            </Flex>
-          </Container>
-        </AppShell.Header>
+    <ClerkProvider
+      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ""}
+    >
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-900 text-white shadow-lg py-4 px-6 flex items-center justify-between">
+        {/* Logo or brand name */}
+        <div className="text-xl font-bold tracking-wide">
+          <Link href="/">AetherShop.</Link>
+        </div>
 
-        <AppShell.Navbar p="md">
-          <Stack gap="sm">
-            <Button variant="light" fullWidth>
-              Dashboard
-            </Button>
-            <Button variant="light" fullWidth>
-              About Us
-            </Button>
-            <Button variant="light" fullWidth>
-              Shop
-            </Button>
-            <Button variant="light" fullWidth>
-              Contact
-            </Button>
-          </Stack>
-          <Divider my="sm" />
-          <Text size="xs" c="dimmed" ta="center">
-            © 2025 AetherShop
-          </Text>
-        </AppShell.Navbar>
+        {/* Navigation links */}
+        <div className="hidden lg:flex space-x-6">
+          <Link
+            href="/"
+            className="hover:bg-gray-700 px-4 py-2 rounded transition-colors"
+          >
+            Dashboard
+          </Link>
+          <Link
+            href="/about"
+            className="hover:bg-gray-700 px-4 py-2 rounded transition-colors"
+          >
+            About Us
+          </Link>
+          <Link
+            href="/shopping"
+            className="hover:bg-gray-700 px-4 py-2 rounded transition-colors"
+          >
+            Shop
+          </Link>
+          <Link
+            href="/contact"
+            className="hover:bg-gray-700 px-4 py-2 rounded transition-colors"
+          >
+            Contact
+          </Link>
+        </div>
 
-        <AppShell.Main>
-          <Text ta="center" mt="xl">
-            Welcome to AetherShop!
-          </Text>
-        </AppShell.Main>
-      </AppShell>
+        {/* Authentication */}
+        <div className="flex items-center space-x-4">
+          {isLoading ? (
+            <div>Loading...</div>
+          ) : error ? (
+            <div>Error signing in! {error.message}</div>
+          ) : user ? (
+            <UserButton />
+          ) : (
+            <SignedOut>
+              <SignInButton mode="modal">
+                <button className="text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded transition-colors">
+                  Login
+                </button>
+              </SignInButton>
+            </SignedOut>
+          )}
+        </div>
+      </nav>
     </ClerkProvider>
   );
 };
 
-export default CustomNavbar;
+export default Navbar;
