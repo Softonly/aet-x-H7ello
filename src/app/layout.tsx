@@ -4,7 +4,7 @@ import "../styles/globals.css";
 import "../styles/sidebar.css";
 import { fonts } from "../font";
 import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import Navbar from "../../@/components/layout/navbar";
 import { Providers } from "./providers";
 import { createClient } from "@libsql/client";
@@ -37,20 +37,20 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ""}>
-      <ClerkLoaded>
-        <html lang="en" className="dark">
-          <body className={`${fonts.default.className} bg-teal-800 min-h-screen text-white`}>
+      <html lang="en" className="dark">
+        <body className={`${fonts.default.className} bg-teal-800 min-h-screen text-white`}>
+          <ClerkLoaded>
             <Providers>
               <div className="flex flex-col">
                 <Navbar />
                 <main>{children}</main>
               </div>
             </Providers>
-            <Analytics />
-            <SpeedInsights />
-          </body>
-        </html>
-      </ClerkLoaded>
+          </ClerkLoaded>
+          <Analytics />
+          <SpeedInsights />
+        </body>
+      </html>
     </ClerkProvider>
   );
 }
