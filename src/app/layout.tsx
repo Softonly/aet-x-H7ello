@@ -1,4 +1,3 @@
-import React from "react";
 import { ClerkProvider, ClerkLoaded } from "@clerk/nextjs";
 import { Metadata } from "next";
 import "../styles/globals.css";
