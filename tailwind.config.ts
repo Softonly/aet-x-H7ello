@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import daisyui from "daisyui";
+import { heroui } from "@heroui/react";
 
 const config: Config = {
   darkMode: ["class"],
@@ -9,6 +10,7 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}", // NextUI content paths
+    "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}", // HeroUI content paths
   ],
   theme: {
     container: {
@@ -137,6 +139,7 @@ const config: Config = {
     require("@tailwindcss/forms"),
     require("tailwindcss-react-aria-components"),
     daisyui,
+    heroui(),
   ],
 };
 
