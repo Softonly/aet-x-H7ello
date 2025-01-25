@@ -53,10 +53,11 @@
     "dist",
     ".next",
     "**/*.md",
-    "./node_modules/@libsql/hrana-client/README.md",
-    "./node_modules/@libsql/hrana-client/.LICENSE",
     "**/*.LICENSE",
     "**/*.js.map",
-    "**/*.jsx.map"
+    "**/*.jsx.map",
+    "./node_modules/@libsql/hrana-client/README.md",
+    "./node_modules/@libsql/hrana-client/.LICENSE",
+    "./node_modules/@heroui/**/*"
   ]
 }
