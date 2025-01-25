@@ -32,10 +32,7 @@ const nextConfig = {
     return config;
   },
   reactStrictMode: true,
-  swcMinify: true, // SWC ile minify etme
-  experimental: {
-    appDir: true, // App Router kullanımı
-  },
+  experimental: {},
 };
 
 export default nextConfig;
