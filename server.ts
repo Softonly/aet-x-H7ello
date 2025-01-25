@@ -61,17 +61,13 @@ server.use((req: Request, res: Response, next: Function) => {
   const allowedOrigins = [
     'http://localhost:3000',
     'https://aet-x-h7ello.vercel.app',
-    'https://datafortress.website',
-    'https://www.datafortress.website',
-    'https://clerk.datafortress.webiste',
     'https://datafortress.shop',
     'https://www.datafortress.shop',
     'https://clerk.datafortress.shop',
-    'https://clerk.datafortress.shop/npm/@clerk/clerk-js@5/dist/clerk.browser.js',
-    'https://clerk.datafortress.website/npm/@clerk/clerk-js@5/dist/clerk.browser.js'
+    'https://clerk.datafortress.shop/npm/@clerk/clerk-js@5/dist/clerk.browser.js'
   ];
 
-  if (origin && (allowedOrigins.includes(origin) || origin.endsWith('.datafortress.website'))) {
+  if (origin && (allowedOrigins.includes(origin) || origin.endsWith('*.datafortress.shop'))) {
     res.set('Access-Control-Allow-Origin', origin);
     res.set('Access-Control-Allow-Credentials', 'true');
   }
