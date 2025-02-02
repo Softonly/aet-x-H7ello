@@ -11,6 +11,8 @@ import {
   useAuth,
 } from "@clerk/nextjs";
 import { init } from "@instantdb/react";
+import { ExpandableTabs } from "../../../src/components/ui/expandable-tabs";
+import { Home, Info, ShoppingBag, Mail } from "lucide-react";
 
 // Initialize InstantDB
 const db = init({ appId: process.env.NEXT_PUBLIC_INSTANTDB_APP_ID || "" });
@@ -34,42 +36,26 @@ const Navbar = () => {
 
   const { isLoading, user, error } = db.useAuth();
 
+  const tabs = [
+    { title: "Dashboard", icon: Home, href: "/" },
+    { title: "About Us", icon: Info, href: "/about" },
+    { title: "Shop", icon: ShoppingBag, href: "/shopping" },
+    { title: "Contact", icon: Mail, href: "/contact" },
+  ];
+
   return (
     <ClerkProvider
       publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ""}
     >
       <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-900 text-white shadow-lg py-4 px-6 flex items-center justify-between">
-        {/* Logo or brand name */}
+        {/* Logo */}
         <div className="text-xl font-bold tracking-wide">
           <Link href="/">AetherShop.</Link>
         </div>
 
-        {/* Navigation links */}
+        {/* Navigation Links */}
         <div className="hidden lg:flex space-x-6">
-          <Link
-            href="/"
-            className="hover:bg-gray-700 px-4 py-2 rounded transition-colors"
-          >
-            Dashboard
-          </Link>
-          <Link
-            href="/about"
-            className="hover:bg-gray-700 px-4 py-2 rounded transition-colors"
-          >
-            About Us
-          </Link>
-          <Link
-            href="/shopping"
-            className="hover:bg-gray-700 px-4 py-2 rounded transition-colors"
-          >
-            Shop
-          </Link>
-          <Link
-            href="/contact"
-            className="hover:bg-gray-700 px-4 py-2 rounded transition-colors"
-          >
-            Contact
-          </Link>
+          <ExpandableTabs tabs={tabs} />
         </div>
 
         {/* Authentication */}
