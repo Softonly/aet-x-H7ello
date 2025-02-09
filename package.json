@@ -1,7 +1,7 @@
 {
   "name": "aetherweb3content",
   "version": "1.0.0",
-  "packageManager": "npm@10.8.2",
+  "packageManager": "npm@11.1.0",
   "description": "Aether Web3 DApp",
   "private": true,
   "type": "module",
